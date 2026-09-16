@@ -1,0 +1,1653 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#080503">
+  <title>Aurum Sequence — Luxury Look-and-Say Engine</title>
+  <meta name="description" content="A luxury, high-converting single-file web experience for the Look-and-Say sequence with embedded Python, TypeScript, Java, and README artifacts.">
+  <meta property="og:title" content="Aurum Sequence">
+  <meta property="og:description" content="Luxury single-file Look-and-Say engine with product structure and full-stack blueprints.">
+  <meta property="og:type" content="website">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Product",
+        "@id": "https://example.com/aurum-sequence#product",
+        "name": "Aurum Sequence",
+        "description": "A luxury single-file web experience and API blueprint for the Look-and-Say sequence.",
+        "brand": {
+          "@type": "Brand",
+          "name": "Aurum Labs"
+        },
+        "category": "Developer tool",
+        "url": "https://example.com/aurum-sequence",
+        "offers": {
+          "@type": "Offer",
+          "price": "0.00",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock",
+          "url": "https://example.com/aurum-sequence"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Aurum Sequence Engine",
+        "operatingSystem": "Web, Python, TypeScript, Java",
+        "applicationCategory": "DeveloperApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0.00",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080503;
+      --bg-soft: #120c08;
+      --panel: rgba(20, 14, 9, 0.72);
+      --gold: #d4af37;
+      --gold-soft: #f0d98c;
+      --champagne: #f7ecd2;
+      --text: #f8f3e7;
+      --muted: rgba(248, 243, 231, 0.72);
+      --line: rgba(212, 175, 55, 0.32);
+      --danger: #ff9f8f;
+      --success: #98f7c3;
+      --radius: 24px;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+      --font-display: "Didot", "Bodoni MT", "Playfair Display", "Georgia", serif;
+      --font-body: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--text);
+      line-height: 1.6;
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(212, 175, 55, 0.18), transparent 60%),
+        radial-gradient(900px 500px at 10% 20%, rgba(212, 175, 55, 0.08), transparent 55%),
+        linear-gradient(180deg, #090604, #050302 55%, #000);
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--gold-soft);
+    }
+
+    .skip {
+      position: absolute;
+      left: -999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .skip:focus {
+      left: 16px;
+      top: 16px;
+      width: auto;
+      height: auto;
+      z-index: 99;
+      background: #000;
+      padding: 12px 16px;
+      color: var(--gold-soft);
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(5, 3, 2, 0.55);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.16);
+    }
+
+    .site-header nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px clamp(16px, 4vw, 48px);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--champagne);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--gold);
+      background: linear-gradient(180deg, rgba(212, 175, 55, 0.22), rgba(212, 175, 55, 0.04));
+      font-weight: 700;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+    }
+
+    .nav-menu a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-menu a:hover,
+    .nav-menu a:focus-visible {
+      color: var(--gold-soft);
+    }
+
+    .nav-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--gold-soft);
+      border-radius: 14px;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      padding: 96px 20px 64px;
+    }
+
+    #aurum-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin: 0;
+      display: inline-flex;
+      padding: 8px 14px;
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      border-radius: 999px;
+      color: var(--gold-soft);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      background: rgba(212, 175, 55, 0.07);
+    }
+
+    h1 {
+      margin: 18px auto 0;
+      font-family: var(--font-display);
+      font-size: clamp(2.75rem, 8vw, 7rem);
+      line-height: 0.95;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      background: linear-gradient(90deg, #fff5da, var(--gold), #9b6d00);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-wrap: balance;
+    }
+
+    .lede {
+      max-width: 760px;
+      margin: 24px auto 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+      text-wrap: pretty;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      margin-top: 32px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--champagne);
+      background: linear-gradient(180deg, rgba(212, 175, 55, 0.24), rgba(212, 175, 55, 0.06));
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      box-shadow: 0 12px 34px rgba(212, 175, 55, 0.08);
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(212, 175, 55, 0.55);
+      box-shadow: 0 16px 44px rgba(212, 175, 55, 0.16);
+    }
+
+    .button-ghost {
+      background: transparent;
+      color: var(--gold-soft);
+    }
+
+    .button-small {
+      min-height: 40px;
+      padding: 8px 16px;
+      font-size: 0.92rem;
+    }
+
+    .proof {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      max-width: 980px;
+      margin: 56px auto 0;
+      padding: 0;
+    }
+
+    .proof > div {
+      border: 1px solid rgba(212, 175, 55, 0.16);
+      background: rgba(12, 8, 5, 0.5);
+      border-radius: 18px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .proof dt {
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .proof dd {
+      margin: 8px 0 0;
+      font-size: 1.05rem;
+      color: var(--champagne);
+    }
+
+    .panel {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: clamp(64px, 9vw, 110px) 20px;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      margin: 0 0 12px;
+      color: var(--champagne);
+      text-wrap: balance;
+    }
+
+    .section-copy {
+      color: var(--muted);
+      max-width: 760px;
+      margin: 0 0 36px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      color: var(--gold-soft);
+      letter-spacing: 0.04em;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .engine-shell {
+      display: grid;
+      gap: 18px;
+    }
+
+    .sequence-form {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: end;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(9, 6, 4, 0.62);
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      background: #0b0705;
+      color: var(--text);
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font: inherit;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(248, 243, 231, 0.35);
+    }
+
+    input:focus-visible,
+    textarea:focus-visible,
+    button:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    .output-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .run-display {
+      min-height: 120px;
+      padding: 20px;
+      border-radius: 20px;
+      background: #090503;
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      font-family: var(--font-mono);
+      font-size: clamp(1.1rem, 3vw, 2.2rem);
+      letter-spacing: 0.08em;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .steps {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .step-chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--champagne);
+      background: rgba(212, 175, 55, 0.08);
+      font-size: 0.95rem;
+    }
+
+    .chain-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .chain-list li {
+      display: flex;
+      gap: 16px;
+      align-items: baseline;
+      padding: 12px 16px;
+      border: 1px solid rgba(212, 175, 55, 0.12);
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 16px;
+    }
+
+    .chain-index {
+      color: var(--gold);
+      font-size: 0.85rem;
+      min-width: 2ch;
+    }
+
+    .chain-value {
+      font-family: var(--font-mono);
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .status {
+      min-height: 1.4em;
+      margin: 12px 0 0;
+      color: var(--success);
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    .sequence-form .status,
+    .lead-form .status {
+      grid-column: 1 / -1;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .tab {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .tab[aria-selected="true"] {
+      color: var(--gold-soft);
+      border-color: var(--line);
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    .code-panel {
+      display: none;
+      position: relative;
+    }
+
+    .code-panel.active {
+      display: block;
+    }
+
+    .code-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      padding: 10px;
+      border: 1px solid rgba(212, 175, 55, 0.16);
+      border-bottom: 0;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 18px 18px 0 0;
+    }
+
+    pre {
+      margin: 0;
+      padding: 20px;
+      overflow: auto;
+      max-height: 520px;
+      background: #070402;
+      border: 1px solid rgba(212, 175, 55, 0.16);
+      border-radius: 0 0 18px 18px;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: #f3e8cf;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .price-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .price-card.featured {
+      border-color: rgba(212, 175, 55, 0.55);
+      transform: translateY(-6px);
+    }
+
+    .price {
+      font-size: 2rem;
+      font-family: var(--font-display);
+      color: var(--gold-soft);
+      margin: 16px 0;
+    }
+
+    .feature-list {
+      margin: 0 0 20px;
+      padding-left: 20px;
+      color: var(--muted);
+      display: grid;
+      gap: 8px;
+    }
+
+    .lead-form {
+      display: grid;
+      gap: 16px;
+      max-width: 760px;
+      padding: 28px;
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background: rgba(9, 6, 4, 0.62);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .references ol {
+      padding-left: 20px;
+      color: var(--muted);
+      display: grid;
+      gap: 12px;
+    }
+
+    .site-footer {
+      padding: 40px 20px 70px;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid rgba(212, 175, 55, 0.14);
+    }
+
+    .js .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .js .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 900px) {
+      .nav-toggle {
+        display: inline-flex;
+      }
+
+      .nav-menu {
+        position: fixed;
+        inset: 72px 16px auto;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: rgba(8, 5, 3, 0.95);
+        display: none;
+        z-index: 60;
+      }
+
+      .nav-menu.open {
+        display: grid;
+      }
+
+      .proof,
+      .card-grid,
+      .output-grid,
+      .pricing-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sequence-form {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .js .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav aria-label="Primary">
+      <a class="brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">Au</span>
+        <span>Aurum Sequence</span>
+      </a>
+
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">Menu</button>
+
+      <ul id="nav-menu" class="nav-menu">
+        <li><a href="#engine">Engine</a></li>
+        <li><a href="#stack">Stack</a></li>
+        <li><a href="#structure">Structure</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#references">References</a></li>
+        <li><a href="#contact" class="button button-small">Get Access</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-label="Introduction">
+      <canvas id="aurum-canvas" aria-hidden="true"></canvas>
+
+      <div class="hero-inner reveal">
+        <p class="eyebrow">Luxury algorithmic conversion</p>
+        <h1>The Look-and-Say sequence, finished in gold.</h1>
+        <p class="lede">
+          A single-file, high-converting web artifact that runs the recursive Look-and-Say engine in the browser,
+          publishes schema.org product structure, and carries Python, TypeScript, Java, and README blueprints in one deliverable.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button" href="#engine">Run the engine</a>
+          <a class="button button-ghost" href="#contact">Request private build</a>
+        </div>
+
+        <dl class="proof">
+          <div>
+            <dt>Dependencies</dt>
+            <dd>0 external</dd>
+          </div>
+          <div>
+            <dt>Execution</dt>
+            <dd>Client-side</dd>
+          </div>
+          <div>
+            <dt>Structured data</dt>
+            <dd>JSON-LD</dd>
+          </div>
+          <div>
+            <dt>Motion</dt>
+            <dd>Reduced-motion aware</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section id="engine" class="panel" aria-labelledby="engine-title">
+      <h2 id="engine-title" class="reveal">Sequence engine</h2>
+      <p class="section-copy reveal">
+        Enter a decimal string. The engine groups consecutive digits, emits count-digit pairs, and renders the next term of the sequence.
+      </p>
+
+      <div class="engine-shell">
+        <form id="sequence-form" class="sequence-form reveal" novalidate>
+          <div class="field">
+            <label for="sequence-input">Decimal string</label>
+            <input
+              id="sequence-input"
+              name="sequence"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              spellcheck="false"
+              maxlength="1000"
+              value="1"
+              required
+              aria-describedby="sequence-status"
+            >
+          </div>
+
+          <button type="submit" class="button">Transform</button>
+          <p id="sequence-status" class="status" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="output-grid">
+          <article class="card reveal">
+            <h3>Input</h3>
+            <div id="input-run" class="run-display" aria-live="polite">1</div>
+          </article>
+
+          <article class="card reveal">
+            <h3>Output</h3>
+            <div id="output-run" class="run-display" aria-live="polite">11</div>
+          </article>
+        </div>
+
+        <section class="card reveal" aria-label="Run groups">
+          <h3>Groups</h3>
+          <div id="step-list" class="steps"></div>
+        </section>
+
+        <section class="card reveal" aria-label="Sequence chain">
+          <h3>Next five terms</h3>
+          <ol id="chain-list" class="chain-list"></ol>
+        </section>
+      </div>
+    </section>
+
+    <section id="stack" class="panel" aria-labelledby="stack-title">
+      <h2 id="stack-title" class="reveal">Stack dossier</h2>
+      <p class="section-copy reveal">
+        The page is the front-end artifact. The panels carry backend and documentation blueprints.
+      </p>
+
+      <div class="tabs reveal" role="tablist" aria-label="Code artifacts">
+        <button id="tab-python" class="tab" type="button" role="tab" aria-selected="true" aria-controls="panel-python">Python</button>
+        <button id="tab-typescript" class="tab" type="button" role="tab" aria-selected="false" aria-controls="panel-typescript" tabindex="-1">TypeScript</button>
+        <button id="tab-java" class="tab" type="button" role="tab" aria-selected="false" aria-controls="panel-java" tabindex="-1">Java</button>
+        <button id="tab-readme" class="tab" type="button" role="tab" aria-selected="false" aria-controls="panel-readme" tabindex="-1">README</button>
+      </div>
+
+      <div id="panel-python" class="code-panel active reveal" role="tabpanel" aria-labelledby="tab-python">
+        <div class="code-toolbar">
+          <button type="button" class="button button-small" data-copy="code-python">Copy</button>
+        </div>
+        <pre><code id="code-python"></code></pre>
+      </div>
+
+      <div id="panel-typescript" class="code-panel reveal" role="tabpanel" aria-labelledby="tab-typescript">
+        <div class="code-toolbar">
+          <button type="button" class="button button-small" data-copy="code-typescript">Copy</button>
+        </div>
+        <pre><code id="code-typescript"></code></pre>
+      </div>
+
+      <div id="panel-java" class="code-panel reveal" role="tabpanel" aria-labelledby="tab-java">
+        <div class="code-toolbar">
+          <button type="button" class="button button-small" data-copy="code-java">Copy</button>
+        </div>
+        <pre><code id="code-java"></code></pre>
+      </div>
+
+      <div id="panel-readme" class="code-panel reveal" role="tabpanel" aria-labelledby="tab-readme">
+        <div class="code-toolbar">
+          <button type="button" class="button button-small" data-copy="code-readme">Copy</button>
+        </div>
+        <pre><code id="code-readme"></code></pre>
+      </div>
+    </section>
+
+    <section id="structure" class="panel" aria-labelledby="structure-title">
+      <h2 id="structure-title" class="reveal">Product structure</h2>
+      <p class="section-copy reveal">
+        Schema.org product and software application entities are embedded in the document head and mirrored below.
+      </p>
+
+      <div class="card reveal">
+        <div class="code-toolbar">
+          <button type="button" class="button button-small" data-copy="product-json">Copy</button>
+        </div>
+        <pre><code id="product-json"></code></pre>
+      </div>
+    </section>
+
+    <section id="pricing" class="panel" aria-labelledby="pricing-title">
+      <h2 id="pricing-title" class="reveal">Conversion surface</h2>
+      <p class="section-copy reveal">Three offers, one action.</p>
+
+      <div class="pricing-grid">
+        <article class="card price-card reveal">
+          <h3>Atelier</h3>
+          <p class="price">$0</p>
+          <ul class="feature-list">
+            <li>Single-file page</li>
+            <li>Client-side engine</li>
+            <li>JSON-LD product graph</li>
+          </ul>
+          <a class="button button-ghost" href="#contact">Start free</a>
+        </article>
+
+        <article class="card price-card featured reveal">
+          <h3>Maison</h3>
+          <p class="price">$4,800</p>
+          <ul class="feature-list">
+            <li>Custom luxury art direction</li>
+            <li>API integration</li>
+            <li>Analytics and CRO iteration</li>
+          </ul>
+          <a class="button" href="#contact">Book build</a>
+        </article>
+
+        <article class="card price-card reveal">
+          <h3>Sovereign</h3>
+          <p class="price">$18,000</p>
+          <ul class="feature-list">
+            <li>Multi-market rollout</li>
+            <li>Security review</li>
+            <li>Performance SLA</li>
+          </ul>
+          <a class="button button-ghost" href="#contact">Request proposal</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="panel" aria-labelledby="contact-title">
+      <h2 id="contact-title" class="reveal">Private intake</h2>
+      <p class="section-copy reveal">
+        Submit an inquiry. The form stores the lead locally in this self-contained demo.
+      </p>
+
+      <form id="lead-form" class="lead-form reveal" novalidate>
+        <div class="form-grid">
+          <div class="field">
+            <label for="lead-name">Name</label>
+            <input id="lead-name" name="name" type="text" autocomplete="name" required>
+          </div>
+
+          <div class="field">
+            <label for="lead-email">Email</label>
+            <input id="lead-email" name="email" type="email" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="lead-message">Project scope</label>
+          <textarea id="lead-message" name="message" rows="5" placeholder="Luxury landing page, API, animation system, or full-stack build." required></textarea>
+        </div>
+
+        <button class="button" type="submit">Submit inquiry</button>
+        <p id="lead-status" class="status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section id="references" class="panel references" aria-labelledby="references-title">
+      <h2 id="references-title" class="reveal">References</h2>
+      <ol class="reveal">
+        <li>Ecma International. (n.d.). <cite>ECMAScript language specification</cite>. Retrieved September 16, 2026, from https://tc39.es/ecma262/</li>
+        <li>Mozilla Developer Network. (n.d.). <cite>JavaScript</cite>. Retrieved September 16, 2026, from https://developer.mozilla.org/en-US/docs/Web/JavaScript</li>
+        <li>Mozilla Developer Network. (n.d.). <cite>CSS</cite>. Retrieved September 16, 2026, from https://developer.mozilla.org/en-US/docs/Web/CSS</li>
+        <li>WHATWG. (n.d.). <cite>HTML Living Standard</cite>. Retrieved September 16, 2026, from https://html.spec.whatwg.org/</li>
+        <li>Schema.org. (n.d.). <cite>Product</cite>. Retrieved September 16, 2026, from https://schema.org/Product</li>
+        <li>Python Software Foundation. (n.d.). <cite>Python 3 documentation</cite>. Retrieved September 16, 2026, from https://docs.python.org/3/</li>
+        <li>Microsoft. (n.d.). <cite>TypeScript documentation</cite>. Retrieved September 16, 2026, from https://www.typescriptlang.org/docs/</li>
+        <li>Oracle. (n.d.). <cite>Java documentation</cite>. Retrieved September 16, 2026, from https://docs.oracle.com/en/java/</li>
+        <li>W3C. (n.d.). <cite>Web Content Accessibility Guidelines (WCAG) 2.2</cite>. Retrieved September 16, 2026, from https://www.w3.org/TR/WCAG22/</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    Aurum Sequence — single-file deliverable. Built with HTML, CSS, and JavaScript.
+  </footer>
+
+  <script type="text/plain" id="source-python">
+from __future__ import annotations
+
+import re
+from typing import Final
+
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field, field_validator
+
+app = FastAPI(title="Aurum Sequence API", version="1.0.0")
+DIGIT_PATTERN: Final = re.compile(r"^\d+$")
+
+
+class SequenceRequest(BaseModel):
+    value: str = Field(min_length=1, max_length=10_000)
+
+    @field_validator("value")
+    @classmethod
+    def validate_digits(cls, value: str) -> str:
+        if not DIGIT_PATTERN.match(value):
+            raise ValueError("value must contain decimal digits only")
+        return value
+
+
+def look_and_say(value: str) -> str:
+    parts: list[str] = []
+    index = 0
+    length = len(value)
+
+    while index < length:
+        digit = value[index]
+        next_index = index + 1
+
+        while next_index < length and value[next_index] == digit:
+            next_index += 1
+
+        parts.append(str(next_index - index))
+        parts.append(digit)
+        index = next_index
+
+    return "".join(parts)
+
+
+@app.post("/api/look-and-say")
+def create_sequence(payload: SequenceRequest) -> dict[str, str]:
+    try:
+        return {"input": payload.value, "output": look_and_say(payload.value)}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail="Sequence transformation failed") from exc
+  </script>
+
+  <script type="text/plain" id="source-typescript">
+import Fastify from "fastify";
+import { z } from "zod";
+
+const app = Fastify({ logger: true });
+
+const SequenceRequest = z.object({
+  value: z
+    .string()
+    .regex(/^\d+$/, "value must contain decimal digits only")
+    .min(1)
+    .max(10000),
+});
+
+function lookAndSay(value: string): string {
+  let output = "";
+
+  for (let index = 0; index < value.length; index += 1) {
+    let count = 1;
+
+    while (index + count < value.length && value[index + count] === value[index]) {
+      count += 1;
+    }
+
+    output += String(count) + value[index];
+    index += count - 1;
+  }
+
+  return output;
+}
+
+app.post("/api/look-and-say", async (request, reply) => {
+  const parsed = SequenceRequest.safeParse(request.body);
+
+  if (!parsed.success) {
+    return reply.code(400).send({ error: parsed.error.flatten() });
+  }
+
+  return {
+    input: parsed.data.value,
+    output: lookAndSay(parsed.data.value),
+  };
+});
+
+const start = async () => {
+  try {
+    await app.listen({ port: 8080, host: "0.0.0.0" });
+  } catch (error) {
+    app.log.error(error);
+    process.exit(1);
+  }
+};
+
+start();
+  </script>
+
+  <script type="text/plain" id="source-java">
+package com.aurum.sequence;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+
+@SpringBootApplication
+@RestController
+public class SequenceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(SequenceApplication.class, args);
+    }
+
+    public record SequenceRequest(
+            @NotNull
+            @Pattern(regexp = "\\d+")
+            String value
+    ) {}
+
+    @PostMapping("/api/look-and-say")
+    public ResponseEntity<Map<String, String>> lookAndSay(
+            @Valid @RequestBody SequenceRequest request
+    ) {
+        return ResponseEntity.ok(Map.of(
+                "input", request.value(),
+                "output", transform(request.value())
+        ));
+    }
+
+    private static String transform(String value) {
+        StringBuilder output = new StringBuilder();
+        int index = 0;
+
+        while (index < value.length()) {
+            char digit = value.charAt(index);
+            int nextIndex = index + 1;
+
+            while (nextIndex < value.length() && value.charAt(nextIndex) == digit) {
+                nextIndex += 1;
+            }
+
+            output.append(nextIndex - index).append(digit);
+            index = nextIndex;
+        }
+
+        return output.toString();
+    }
+}
+  </script>
+
+  <script type="text/plain" id="source-readme">
+# Aurum Sequence
+
+## Product intent
+A luxury, high-conversion single-file web page for the Look-and-Say sequence.
+The page is designed as a premium brand surface: high-contrast gold typography,
+restrained motion, structured product data, and immediate interactive proof.
+
+## Methodological choices
+- The Look-and-Say transform is implemented as a linear run-length encoding pass:
+  O(n) time, O(n) output size.
+- The front end is a single HTML document with embedded CSS and JavaScript so the
+  artifact runs without a build step or network dependency.
+- JSON-LD embeds a schema.org Product and SoftwareApplication graph for discoverability.
+- Backend blueprints are included as Python FastAPI, TypeScript Fastify, and Java
+  Spring Boot implementations of the same endpoint contract.
+- Local storage persists sequence state and leads in the browser, making the demo
+  fully operative without a server.
+
+## API contract
+POST /api/look-and-say
+Request: {"value":"1211"}
+Response: {"input":"1211","output":"111221"}
+
+## Verification
+lookAndSay("1") -> "11"
+lookAndSay("11") -> "21"
+lookAndSay("21") -> "1211"
+lookAndSay("1211") -> "111221"
+lookAndSay("3542") -> "13151412"
+
+## References
+Ecma International. (n.d.). ECMAScript language specification. Retrieved September 16, 2026, from https://tc39.es/ecma262/
+Mozilla Developer Network. (n.d.). JavaScript. Retrieved September 16, 2026, from https://developer.mozilla.org/en-US/docs/Web/JavaScript
+Mozilla Developer Network. (n.d.). CSS. Retrieved September 16, 2026, from https://developer.mozilla.org/en-US/docs/Web/CSS
+WHATWG. (n.d.). HTML Living Standard. Retrieved September 16, 2026, from https://html.spec.whatwg.org/
+Schema.org. (n.d.). Product. Retrieved September 16, 2026, from https://schema.org/Product
+Python Software Foundation. (n.d.). Python 3 documentation. Retrieved September 16, 2026, from https://docs.python.org/3/
+Microsoft. (n.d.). TypeScript documentation. Retrieved September 16, 2026, from https://www.typescriptlang.org/docs/
+Oracle. (n.d.). Java documentation. Retrieved September 16, 2026, from https://docs.oracle.com/en/java/
+W3C. (n.d.). Web Content Accessibility Guidelines (WCAG) 2.2. Retrieved September 16, 2026, from https://www.w3.org/TR/WCAG22/
+  </script>
+
+  <script>
+    (() => {
+      'use strict';
+
+      document.documentElement.classList.add('js');
+
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+      const els = {
+        navToggle: $('#nav-toggle'),
+        navMenu: $('#nav-menu'),
+        sequenceForm: $('#sequence-form'),
+        sequenceInput: $('#sequence-input'),
+        sequenceStatus: $('#sequence-status'),
+        inputRun: $('#input-run'),
+        outputRun: $('#output-run'),
+        stepList: $('#step-list'),
+        chainList: $('#chain-list'),
+        productJson: $('#product-json'),
+        leadForm: $('#lead-form'),
+        leadStatus: $('#lead-status'),
+        canvas: $('#aurum-canvas')
+      };
+
+      const productStructure = {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'Product',
+            '@id': 'https://example.com/aurum-sequence#product',
+            name: 'Aurum Sequence',
+            description: 'A luxury single-file web experience and API blueprint for the Look-and-Say sequence.',
+            brand: {
+              '@type': 'Brand',
+              name: 'Aurum Labs'
+            },
+            category: 'Developer tool',
+            url: 'https://example.com/aurum-sequence',
+            offers: {
+              '@type': 'Offer',
+              price: '0.00',
+              priceCurrency: 'USD',
+              availability: 'https://schema.org/InStock',
+              url: 'https://example.com/aurum-sequence'
+            }
+          },
+          {
+            '@type': 'SoftwareApplication',
+            name: 'Aurum Sequence Engine',
+            operatingSystem: 'Web, Python, TypeScript, Java',
+            applicationCategory: 'DeveloperApplication',
+            offers: {
+              '@type': 'Offer',
+              price: '0.00',
+              priceCurrency: 'USD',
+              availability: 'https://schema.org/InStock'
+            }
+          }
+        ]
+      };
+
+      const sanitizeDigits = (value) => String(value || '').replace(/\D+/g, '');
+
+      const lookAndSay = (value) => {
+        const input = sanitizeDigits(value);
+
+        if (!input) {
+          return '';
+        }
+
+        let output = '';
+
+        for (let index = 0; index < input.length; index += 1) {
+          let count = 1;
+
+          while (index + count < input.length && input[index + count] === input[index]) {
+            count += 1;
+          }
+
+          output += String(count) + input[index];
+          index += count - 1;
+        }
+
+        return output;
+      };
+
+      const toRuns = (value) => {
+        const input = sanitizeDigits(value);
+        const runs = [];
+
+        for (let index = 0; index < input.length; index += 1) {
+          let count = 1;
+
+          while (index + count < input.length && input[index + count] === input[index]) {
+            count += 1;
+          }
+
+          runs.push({
+            count,
+            digit: input[index]
+          });
+
+          index += count - 1;
+        }
+
+        return runs;
+      };
+
+      const renderSteps = (value) => {
+        const runs = toRuns(value);
+        els.stepList.textContent = '';
+
+        if (!runs.length) {
+          const empty = document.createElement('span');
+          empty.className = 'step-chip';
+          empty.textContent = 'No digit groups';
+          els.stepList.appendChild(empty);
+          return;
+        }
+
+        const fragment = document.createDocumentFragment();
+
+        runs.forEach((run) => {
+          const chip = document.createElement('span');
+          chip.className = 'step-chip';
+          chip.textContent = `${run.count} × ${run.digit}`;
+          fragment.appendChild(chip);
+        });
+
+        els.stepList.appendChild(fragment);
+      };
+
+      const renderChain = (value) => {
+        els.chainList.textContent = '';
+
+        let current = sanitizeDigits(value);
+
+        if (!current) {
+          return;
+        }
+
+        for (let depth = 0; depth <= 5; depth += 1) {
+          const item = document.createElement('li');
+
+          const index = document.createElement('span');
+          index.className = 'chain-index';
+          index.textContent = String(depth);
+
+          const term = document.createElement('code');
+          term.className = 'chain-value';
+          term.textContent = current;
+
+          item.append(index, term);
+          els.chainList.appendChild(item);
+
+          if (depth === 5) {
+            break;
+          }
+
+          current = lookAndSay(current);
+
+          if (current.length > 5000) {
+            break;
+          }
+        }
+      };
+
+      const updateSequence = (rawValue) => {
+        const value = sanitizeDigits(rawValue);
+
+        if (!value) {
+          els.sequenceStatus.textContent = 'Enter at least one digit.';
+          els.sequenceStatus.classList.add('error');
+          els.inputRun.textContent = '';
+          els.outputRun.textContent = '';
+          els.stepList.textContent = '';
+          els.chainList.textContent = '';
+          return;
+        }
+
+        els.sequenceStatus.textContent = 'Sequence transformed.';
+        els.sequenceStatus.classList.remove('error');
+        els.sequenceInput.value = value;
+
+        const output = lookAndSay(value);
+
+        els.inputRun.textContent = value;
+        els.outputRun.textContent = output;
+
+        renderSteps(value);
+        renderChain(value);
+
+        try {
+          localStorage.setItem('aurum.sequence', value);
+        } catch (error) {}
+      };
+
+      if (els.sequenceForm) {
+        els.sequenceForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          updateSequence(els.sequenceInput.value);
+        });
+
+        let debounceTimer = 0;
+
+        els.sequenceInput.addEventListener('input', (event) => {
+          const cleaned = sanitizeDigits(event.target.value);
+
+          if (cleaned !== event.target.value) {
+            event.target.value = cleaned;
+          }
+
+          window.clearTimeout(debounceTimer);
+
+          debounceTimer = window.setTimeout(() => {
+            updateSequence(cleaned);
+          }, 180);
+        });
+      }
+
+      if (els.navToggle && els.navMenu) {
+        els.navToggle.addEventListener('click', () => {
+          const open = els.navMenu.classList.toggle('open');
+          els.navToggle.setAttribute('aria-expanded', String(open));
+        });
+
+        $$('a', els.navMenu).forEach((link) => {
+          link.addEventListener('click', () => {
+            els.navMenu.classList.remove('open');
+            els.navToggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      const tabs = $$('.tab');
+      const panels = $$('.code-panel');
+
+      const activateTab = (tab) => {
+        tabs.forEach((item) => {
+          const selected = item === tab;
+          item.setAttribute('aria-selected', String(selected));
+          item.tabIndex = selected ? 0 : -1;
+        });
+
+        panels.forEach((panel) => {
+          panel.classList.toggle('active', panel.id === tab.getAttribute('aria-controls'));
+        });
+
+        tab.focus();
+      };
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => {
+          activateTab(tab);
+        });
+
+        tab.addEventListener('keydown', (event) => {
+          let targetIndex = index;
+
+          if (event.key === 'ArrowRight') {
+            targetIndex = (index + 1) % tabs.length;
+          } else if (event.key === 'ArrowLeft') {
+            targetIndex = (index - 1 + tabs.length) % tabs.length;
+          } else if (event.key === 'Home') {
+            targetIndex = 0;
+          } else if (event.key === 'End') {
+            targetIndex = tabs.length - 1;
+          } else {
+            return;
+          }
+
+          event.preventDefault();
+          activateTab(tabs[targetIndex]);
+        });
+      });
+
+      const artifactMap = new Map([
+        ['code-python', 'source-python'],
+        ['code-typescript', 'source-typescript'],
+        ['code-java', 'source-java'],
+        ['code-readme', 'source-readme']
+      ]);
+
+      artifactMap.forEach((sourceId, codeId) => {
+        const codeElement = document.getElementById(codeId);
+        const sourceElement = document.getElementById(sourceId);
+
+        if (codeElement && sourceElement) {
+          codeElement.textContent = sourceElement.textContent.trim();
+        }
+      });
+
+      if (els.productJson) {
+        els.productJson.textContent = JSON.stringify(productStructure, null, 2);
+      }
+
+      const copyFromElement = async (id) => {
+        const target = document.getElementById(id);
+
+        if (!target) {
+          return false;
+        }
+
+        const text = target.textContent;
+
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch (error) {
+          const helper = document.createElement('textarea');
+          helper.value = text;
+          helper.setAttribute('readonly', '');
+          helper.style.position = 'fixed';
+          helper.style.left = '-9999px';
+
+          document.body.appendChild(helper);
+          helper.select();
+
+          const result = document.execCommand('copy');
+          helper.remove();
+
+          return result;
+        }
+      };
+
+      document.addEventListener('click', async (event) => {
+        const button = event.target.closest('[data-copy]');
+
+        if (!button) {
+          return;
+        }
+
+        const copied = await copyFromElement(button.getAttribute('data-copy'));
+
+        button.textContent = copied ? 'Copied' : 'Copy failed';
+
+        window.setTimeout(() => {
+          button.textContent = 'Copy';
+        }, 1200);
+      });
+
+      if (els.leadForm) {
+        els.leadForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+
+          const name = $('#lead-name').value.trim();
+          const email = $('#lead-email').value.trim();
+          const message = $('#lead-message').value.trim();
+
+          const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+          if (!name || !emailValid || !message) {
+            els.leadStatus.textContent = 'Provide name, valid email, and scope.';
+            els.leadStatus.classList.add('error');
+            return;
+          }
+
+          const lead = {
+            name,
+            email,
+            message,
+            createdAt: new Date().toISOString()
+          };
+
+          try {
+            const existing = JSON.parse(localStorage.getItem('aurum.leads') || '[]');
+            existing.push(lead);
+            localStorage.setItem('aurum.leads', JSON.stringify(existing));
+
+            els.leadStatus.textContent = 'Inquiry stored locally. Ready for backend integration.';
+            els.leadStatus.classList.remove('error');
+            els.leadForm.reset();
+          } catch (error) {
+            els.leadStatus.textContent = 'Local storage unavailable.';
+            els.leadStatus.classList.add('error');
+          }
+        });
+      }
+
+      if (els.canvas) {
+        const ctx = els.canvas.getContext('2d');
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        let particles = [];
+        let animationFrame = 0;
+
+        const seedParticles = () => {
+          if (!ctx) {
+            return;
+          }
+
+          const rect = els.canvas.getBoundingClientRect();
+
+          if (!rect.width || !rect.height) {
+            return;
+          }
+
+          els.canvas.width = Math.floor(rect.width * dpr);
+          els.canvas.height = Math.floor(rect.height * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+          const count = Math.min(120, Math.floor(rect.width / 12));
+
+          particles = Array.from({ length: count }, () => ({
+            x: Math.random() * rect.width,
+            y: Math.random() * rect.height,
+            r: Math.random() * 1.8 + 0.2,
+            vx: (Math.random() - 0.5) * 0.12,
+            vy: (Math.random() - 0.75) * 0.18,
+            alpha: Math.random() * 0.45 + 0.08
+          }));
+        };
+
+        const drawParticles = () => {
+          if (!ctx) {
+            return;
+          }
+
+          const rect = els.canvas.getBoundingClientRect();
+
+          ctx.clearRect(0, 0, rect.width, rect.height);
+
+          particles.forEach((particle) => {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+
+            if (particle.y < -10) {
+              particle.y = rect.height + 10;
+            }
+
+            if (particle.x < -10) {
+              particle.x = rect.width + 10;
+            }
+
+            if (particle.x > rect.width + 10) {
+              particle.x = -10;
+            }
+
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(212, 175, 55, ${particle.alpha})`;
+            ctx.fill();
+          });
+
+          if (!reduceMotion) {
+            animationFrame = window.requestAnimationFrame(drawParticles);
+          }
+        };
+
+        seedParticles();
+        drawParticles();
+
+        window.addEventListener('resize', () => {
+          window.cancelAnimationFrame(animationFrame);
+          seedParticles();
+          drawParticles();
+        });
+      }
+
+      const revealElements = $$('.reveal');
+
+      if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.12
+        });
+
+        revealElements.forEach((element) => {
+          revealObserver.observe(element);
+        });
+      } else {
+        revealElements.forEach((element) => {
+          element.classList.add('is-visible');
+        });
+      }
+
+      const savedSequence = (() => {
+        try {
+          return localStorage.getItem('aurum.sequence') || '1';
+        } catch (error) {
+          return '1';
+        }
+      })();
+
+      updateSequence(savedSequence);
+    })();
+  </script>
+</body>
+</html>
