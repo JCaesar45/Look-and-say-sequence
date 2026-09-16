@@ -1,0 +1,36 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Product",
+      "@id": "https://example.com/aurum-sequence#product",
+      "name": "Aurum Sequence",
+      "description": "A luxury single-file web experience and API blueprint for the Look-and-Say sequence.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Aurum Labs"
+      },
+      "category": "Developer tool",
+      "url": "https://example.com/aurum-sequence",
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://example.com/aurum-sequence"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Aurum Sequence Engine",
+      "operatingSystem": "Web, Python, TypeScript, Java",
+      "applicationCategory": "DeveloperApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+  ]
+}
